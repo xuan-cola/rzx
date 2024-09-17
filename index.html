@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人主页</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100%;
+        }
+        body {
+            background-image: url('bg1.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+        .header {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .header img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .tag {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
+            margin: auto;
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            flex-grow: 1;
+        }
+        .left-column {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .right-column {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .top-row {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .quote-box, .time-box {
+            flex: 1;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-right: 10px;
+        }
+        .links-box {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        h1, h2 {
+            margin-top: 0;
+        }
+        .quote {
+            font-style: italic;
+            cursor: pointer;
+        }
+        .links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+        }
+        .links a {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            color: white;
+            text-decoration: none;
+        }
+        #context-menu-warning {
+            position: fixed;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        #music-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        #music-button svg {
+            width: 30px;
+            height: 30px;
+            fill: white;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            .left-column {
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            .top-row {
+                flex-direction: column;
+            }
+            .quote-box, .time-box {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<header class="header">
+    <img src="profile.png" alt="我的头像">
+    <h1>欢迎来到轩的个人主页</h1>
+    <div class="tag-container">
+        <span class="tag">10后</span>
+        <span class="tag">男初</span>
+        <span class="tag">北京天津</span>
+        <span class="tag">剪辑爱好者</span>
+        <span class="tag">羽毛球爱好者</span>
+        <span class="tag">初三拼搏者</span>
+    </div>
+    <h5>使用说明：点击每日金句可以切换金句，点击音乐可以播放与暂停音乐，点击友情链接可以直达网站，本网站不可右键</h5>
+    <button id="music-button" aria-label="播放音乐">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+        </svg>
+    </button>
+</header>
+<div class="container">
+    <div class="left-column">
+        <h1>联系方式</h1>
+        <p>邮箱: 3342483539@qq.com</p>
+        <p>微信: *********(暂不透露)</p>
+        <p>公众号：轩的公众号</p>
+        <p>QQ: 3342483539</p>
+        <p>抖音:这可乐好可乐</p>
+        <p>视频号:这可乐好可乐</p>
+        <p>哔哩哔哩:这可乐好可乐</p>
+        <p>小红书:这可乐好可乐</p>
+    </div>
+    <div class="right-column">
+        <div class="top-row">
+            <div class="quote-box">
+                <h1>每日金句</h1>
+                <h2 id="quote" class="quote"></h2>
+            </div>
+            <div class="time-box">
+                <h1>当前时间</h1>
+                <h3><div id="date"></div></h3>
+                <h1><div id="time"></div></h1>
+            </div>
+        </div>
+        <div class="links-box">
+            <h2>友情链接</h2>
+            <div class="links">
+                <a href="rzx-xuan.pages.dev">轩的CloudFlare网站</a>
+                <a href="github.com/xuan-cola/rzx">轩的GitHub网站</a>
+                <a href="https://v.douyin.com/ikAXKprv/">轩的抖音</a>
+                <a href="#">敬请期待</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="context-menu-warning">本网站不可右键</div>
+<audio id="background-music" loop>
+    <source src="Wakeoao.flac" type="audio/mpeg">
+    您的浏览器不支持播放音频
+</audio>
+<script>
+    // 更新时间
+    function updateTime() {
+        const now = new Date();
+        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+        const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        document.getElementById('date').textContent = now.toLocaleDateString('zh-CN', dateOptions);
+        document.getElementById('time').textContent = now.toLocaleTimeString('zh-CN', timeOptions);
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    // 每日金句
+    const quotes = [
+        "生活中最美好的事情都是免费的",
+        "面对生活的波折, 不妨微笑以对, 你会发现, 其实一切没那么糟",
+        "今天的付出就是明天的收获",
+        "保持积极乐观的心态，一切都会变好的",
+        "成功不是终点，失败也不是终结，最重要的是继续前进的勇气",
+        "一寸光阴一寸金，寸金难买寸光阴。",
+        "把行动交给现在，把结果交给时间",
+        "失望和希望，常常在同一条路上朝你走来",
+        "成功其实很简单，就是比失败击倒你们的次数多一次",
+        "不要只顾着欣赏他人的绚烂，而忘记了自己的芬芳",
+        "我们的人生不是只有成功和失败两个词，坚持和奋斗同样有意义",
+        "星光不问赶路人，历史属于奋斗者",
+        "不要为打翻的牛奶哭泣",
+        "山高路远，勿惧风雨兼程，心之所向，素履以往",
+        "路漫漫其修远兮，吾将上下而求索",
+        "欲买桂花同载酒，终不似，少年游",
+        "记住该记住的,忘记该忘记的,改变能改变的,接受不能改变的",
+        "世界从不偏爱懒惰者,也从未辜负努力者",
+        "最慢的步伐不是跬步，而是徘徊;最快的脚步不是冲刺，而是坚持",
+        "山再高，往上攀，总能登顶;路再长，走下去，定能到达"
+    ];
+    let currentQuote = 0;
+    function updateQuote() {
+        document.getElementById('quote').textContent = quotes[currentQuote];
+        currentQuote = (currentQuote + 1) % quotes.length;
+    }
+    document.getElementById('quote').addEventListener('click', updateQuote);
+    updateQuote();
+
+    // 右键菜单提醒
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+        const warning = document.getElementById('context-menu-warning');
+        warning.style.left = e.pageX + 'px';
+        warning.style.top = e.pageY + 'px';
+        warning.style.opacity = '1';
+        setTimeout(() => {
+            warning.style.opacity = '0';
+        }, 3000);
+    });
+
+    // 音乐播放控制
+    const musicButton = document.getElementById('music-button');
+    const backgroundMusic = document.getElementById('background-music');
+    let isPlaying = false;
+
+    musicButton.addEventListener('click', function() {
+        if (isPlaying) {
+            backgroundMusic.pause();
+            musicButton.setAttribute('aria-label', '播放音乐');
+        } else {
+            backgroundMusic.play();
+            musicButton.setAttribute('aria-label', '暂停音乐');
+        }
+        isPlaying = !isPlaying;
+    });
+</script>
+</body>
+</html>
